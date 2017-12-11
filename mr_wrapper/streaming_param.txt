@@ -1,0 +1,64 @@
+Parameter 	Optional/Required 	Description
+input directoryname or filename	Required 	Input location for mapper
+output directoryname	Required 	Output location for reducer
+mapper executable or JavaClassName	Required 	Mapper executable
+reducer executable or JavaClassName	Required 	Reducer executable
+file filename	Optional 	Make the mapper, reducer, or combiner executable available locally on the compute nodes
+
+inputformat JavaClassName	Optional 	Class you supply should return key/value pairs of Text class. If not specified, TextInputFormat is used as the default
+outputformat JavaClassName	Optional 	Class you supply should take key/value pairs of Text class. If not specified, TextOutputformat is used as the default
+partitioner JavaClassName	Optional 	Class that determines which reduce a key is sent to
+combiner streamingCommand or JavaClassName	Optional 	Combiner executable for map output
+cmdenv name=value	Optional 	Pass environment variable to streaming commands
+inputreader	Optional 	For backwards-compatibility: specifies a record reader class (instead of an input format class)
+verbose	Optional 	Verbose output
+lazyOutput	Optional 	Create output lazily. For example, if the output format is based on FileOutputFormat, the output file is created only on the first call to Context.write
+numReduceTasks	Optional 	Specify the number of reducers
+mapdebug	Optional 	Script to call when map task fails
+reducedebug	Optional 	Script to call when reduce task fails 
+
+
+inputformat
+outputformat
+partitioner 
+combiner 
+cmdenv name=value	
+inputreader	
+verbose
+lazyOutput
+numReduceTasks
+mapdebug
+reducedebug
+		
+		
+-conf configuration_file	Optional	Specify an application configuration file
+-D property=value	Optional	Use value for given property
+-fs host:port or local	Optional	Specify a namenode
+-files	Optional	Specify comma-separated files to be copied to the Map/Reduce cluster
+-libjars	Optional	Specify comma-separated jar files to include in the classpath
+-archives	Optional	Specify comma-separated archives to be unarchived on the compute machines
+
+
+
+
+-conf configuration_file
+-D property=value
+-fs host:port or local
+-files
+-libjars
+-archives
+
+input,output,mapper,reducer
+
+file filename
+inputformat JavaClassName
+outputformat JavaClassName
+partitioner JavaClassName
+combiner streamingCommand or JavaClassName
+cmdenv name=value
+inputreader
+verbose
+lazyOutput
+numReduceTasks
+mapdebug
+reducedebug

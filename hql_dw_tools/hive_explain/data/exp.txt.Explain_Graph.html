@@ -1,0 +1,197 @@
+<!DOCTYPE>
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<title>{table_name}</title>
+		<!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"> -->
+		<script src="../js/jquery-2.0.3.min.js"></script>
+		<script src="../js/cytoscape.min.js"></script>		
+		<script src="../js/dagre.min.js"></script>
+		<script src="../js/cytoscape-dagre.js"></script>
+		<style>
+			body {
+				font-family: helvetica;
+				font-size: 14px;
+			}
+
+			#cy {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 999;
+			}
+
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+			}
+		</style>
+
+		<script>
+			$(function(){                
+				var cy = window.cy = cytoscape({
+					container: document.getElementById('cy'),                
+                    //boxSelectionEnabled: true,
+                    //autounselectify: true,
+
+					layout: {
+						name: 'dagre'
+					},
+
+					style: [
+						{
+							selector: 'node',
+							style: {
+								'content': 'data(label)',
+								'text-opacity': 0.5,
+								'text-valign': 'center',
+								'text-halign': 'right',
+								'background-color': '#11479e',
+                                'text-wrap': 'wrap',
+                                'text-max-width': 800
+							}
+						},
+
+						{
+							selector: 'edge',
+							style: {
+								'width': 4,
+								'target-arrow-shape': 'triangle',
+								'line-color': '#9dbaea',
+								'target-arrow-color': '#9dbaea',
+								'curve-style': 'bezier'
+							}
+						}
+					],
+                    /*
+					elements: {
+						nodes: [
+							{ data: { id: 'n0' } },							
+						],
+						edges: [
+							{ data: { source: 'n0', target: 'n1' } },							
+						]                        
+					},*/
+                    elements: {
+        nodes: [
+            {data:{id:'Stage-29',label:'Stage-29\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}},
+{data:{id:'Stage-30',label:'Stage-30\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-48',label:'Stage-48\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-21',label:'Stage-21\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-20',label:'Stage-20\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-23',label:'Stage-23\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}},
+{data:{id:'Stage-31',label:'Stage-31\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-25',label:'Stage-25\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-24',label:'Stage-24\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-27',label:'Stage-27\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-26',label:'Stage-26\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-55',label:'Stage-55\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-47',label:'Stage-47\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-46',label:'Stage-46\nMap_Reduce\n[InputTables: row_number_window_0] \n[TableScan] :  [count:91198486, size:8072966870] \n[Reduce Output Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[PTF Operator] : [alias:ptf_0] \n[Filter Operator] :  [count:15199747, size:1345494419] \n[Select Operator] :  [count:15199747, size:1345494419] \n[File Output Operator] : '}},
+{data:{id:'Stage-52',label:'Stage-52\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-45',label:'Stage-45\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-44',label:'Stage-44\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-54',label:'Stage-54\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-43',label:'Stage-43\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}},
+{data:{id:'Stage-32',label:'Stage-32\nMap_Reduce\n[InputTables: row_number_window_0] \n[TableScan] :  [count:91198486, size:8072966870] \n[Reduce Output Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[PTF Operator] : [alias:ptf_0] \n[Filter Operator] :  [count:30399495, size:2690988927] \n[Select Operator] :  [count:30399495, size:2690988927] \n[File Output Operator] : '}},
+{data:{id:'Stage-51',label:'Stage-51\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-41',label:'Stage-41\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-53',label:'Stage-53\nMap_Reduce\n[InputTables: row_number_window_0] \n[TableScan] :  [count:91198486, size:8072966870] \n[Reduce Output Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[PTF Operator] : [alias:ptf_0] \n[Filter Operator] :  [count:15199747, size:1345494419] \n[Select Operator] :  [count:15199747, size:1345494419] \n[File Output Operator] : '}},
+{data:{id:'Stage-10',label:'Stage-10\nConditional_Operator\n'}},
+{data:{id:'Stage-11',label:'Stage-11\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-12',label:'Stage-12\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-14',label:'Stage-14\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}},
+{data:{id:'Stage-15',label:'Stage-15\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-16',label:'Stage-16\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[Group By Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-17',label:'Stage-17\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:91198486, size:8072966870] \n[Reduce Output Operator] :  [count:91198486, size:8072966870] \n[Group By Operator] :  [count:45599243, size:4036483435] \n[Filter Operator] :  [count:45599243, size:4036483435] \n[File Output Operator] : '}},
+{data:{id:'Stage-18',label:'Stage-18\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:45599243, size:4036483435] \n[Reduce Output Operator] :  [count:45599243, size:4036483435] \n[TableScan] :  [count:91198486, size:8072966870] \n[Reduce Output Operator] :  [count:91198486, size:8072966870] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-19',label:'Stage-19\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:176317072, size:15607735933] \n[Group By Operator] :  [count:176317072, size:15607735933] \n[Reduce Output Operator] :  [count:176317072, size:15607735933] \n[TableScan] :  [count:176317072, size:15607735933] \n[Group By Operator] :  [count:176317072, size:15607735933] \n[Reduce Output Operator] :  [count:176317072, size:15607735933] \n[TableScan] :  [count:176317072, size:15607735933] \n[Group By Operator] :  [count:176317072, size:15607735933] \n[Reduce Output Operator] :  [count:176317072, size:15607735933] \n[TableScan] :  [count:176317072, size:15607735933] \n[Group By Operator] :  [count:176317072, size:15607735933] \n[Reduce Output Operator] :  [count:176317072, size:15607735933] \n[TableScan] :  [count:176317072, size:15607735933] \n[Group By Operator] :  [count:176317072, size:15607735933] \n[Reduce Output Operator] :  [count:176317072, size:15607735933] \n[Group By Operator] :  [count:88158536, size:7803867966] \n[File Output Operator] : '}},
+{data:{id:'Stage-40',label:'Stage-40\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-38',label:'Stage-38\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-39',label:'Stage-39\nMap_Reduce\n[InputTables: row_number_window_0] \n[TableScan] :  [count:91198486, size:8072966870] \n[Reduce Output Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[PTF Operator] : [alias:ptf_0] \n[Filter Operator] :  [count:15199747, size:1345494419] \n[Select Operator] :  [count:15199747, size:1345494419] \n[File Output Operator] : '}},
+{data:{id:'Stage-36',label:'Stage-36\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}},
+{data:{id:'Stage-50',label:'Stage-50\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}},
+{data:{id:'Stage-37',label:'Stage-37\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-33',label:'Stage-33\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-34',label:'Stage-34\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Filter Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Reduce Output Operator] :  [count:37685323, size:3335936534] \n[Group By Operator] :  [count:18842661, size:1667968222] \n[Select Operator] :  [count:18842661, size:1667968222] \n[Filter Operator] :  [count:6280887, size:555989407] \n[Select Operator] :  [count:6280887, size:555989407] \n[File Output Operator] : '}},
+{data:{id:'Stage-8',label:'Stage-8\nMerge_File_Operator\n'}},
+{data:{id:'Stage-9',label:'Stage-9\nMove_Operator\n'}},
+{data:{id:'Stage-6',label:'Stage-6\nMerge_File_Operator\n'}},
+{data:{id:'Stage-7',label:'Stage-7\nMove_Operator\n'}},
+{data:{id:'Stage-4',label:'Stage-4\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:179357022, size:15876834836] \n[File Output Operator] :  [count:179357022, size:15876834836] \n[TableScan] :  [count:179357022, size:15876834836] \n[File Output Operator] :  [count:179357022, size:15876834836] '}},
+{data:{id:'Stage-5',label:'Stage-5\nStats-Aggr_Operator\n'}},
+{data:{id:'Stage-2',label:'Stage-2\nMap_Reduce\n[InputTables: a] \n[TableScan] :  [count:12561774, size:1111978815] \n[Reduce Output Operator] :  [count:12561774, size:1111978815] \n[TableScan] : [alias:a]  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Join Operator] : \n[File Output Operator] : '}},
+{data:{id:'Stage-3',label:'Stage-3\nMap_Reduce\n[InputTables: ] \n[TableScan] :  [count:82907713, size:7339060632] \n[Reduce Output Operator] :  [count:82907713, size:7339060632] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[TableScan] :  [count:6280887, size:555989407] \n[Reduce Output Operator] :  [count:6280887, size:555989407] \n[Join Operator] : \n[Select Operator] :  [count:182396972, size:16145933740] \n[Filter Operator] :  [count:91198486, size:8072966870] \n[Select Operator] :  [count:91198486, size:8072966870] \n[File Output Operator] : '}},
+{data:{id:'Stage-0',label:'Stage-0\nMove_Operator\n'}},
+{data:{id:'Stage-1',label:'Stage-1\nMap_Reduce\n[InputTables: mds_usr_cookie_phone_rela_his] \n[TableScan] : [alias:mds_usr_cookie_phone_rela_his]  [count:75370647, size:6671873158] \n[Select Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:75370647, size:6671873158] \n[Reduce Output Operator] :  [count:75370647, size:6671873158] \n[Group By Operator] :  [count:37685323, size:3335936534] \n[Select Operator] :  [count:37685323, size:3335936534] \n[Filter Operator] :  [count:12561774, size:1111978815] \n[Select Operator] :  [count:12561774, size:1111978815] \n[File Output Operator] : '}}							
+        ],
+        edges: [
+            {data:{source:'Stage-17',target:'Stage-18'}},
+{data:{source:'Stage-25',target:'Stage-18'}},
+{data:{source:'Stage-31',target:'Stage-32'}},
+{data:{source:'Stage-18',target:'Stage-19'}},
+{data:{source:'Stage-6',target:'Stage-0'}},
+{data:{source:'Stage-51',target:'Stage-52'}},
+{data:{source:'Stage-21',target:'Stage-16'}},
+{data:{source:'Stage-41',target:'Stage-38'}},
+{data:{source:'Stage-8',target:'Stage-9'}},
+{data:{source:'Stage-46',target:'Stage-19'}},
+{data:{source:'Stage-1',target:'Stage-2'}},
+{data:{source:'Stage-26',target:'Stage-25'}},
+{data:{source:'Stage-36',target:'Stage-37'}},
+{data:{source:'Stage-34',target:'Stage-31'}},
+{data:{source:'Stage-44',target:'Stage-45'}},
+{data:{source:'Stage-53',target:'Stage-19'}},
+{data:{source:'Stage-3',target:'Stage-4'}},
+{data:{source:'Stage-4',target:'Stage-10'}},
+{data:{source:'Stage-19',target:'Stage-4'}},
+{data:{source:'Stage-47',target:'Stage-45'}},
+{data:{source:'Stage-0',target:'Stage-5'}},
+{data:{source:'Stage-9',target:'Stage-0'}},
+{data:{source:'Stage-10',target:'Stage-7'}},
+{data:{source:'Stage-10',target:'Stage-6'}},
+{data:{source:'Stage-52',target:'Stage-53'}},
+{data:{source:'Stage-23',target:'Stage-24'}},
+{data:{source:'Stage-38',target:'Stage-39'}},
+{data:{source:'Stage-33',target:'Stage-31'}},
+{data:{source:'Stage-54',target:'Stage-52'}},
+{data:{source:'Stage-10',target:'Stage-8'}},
+{data:{source:'Stage-15',target:'Stage-16'}},
+{data:{source:'Stage-50',target:'Stage-51'}},
+{data:{source:'Stage-20',target:'Stage-16'}},
+{data:{source:'Stage-12',target:'Stage-3'}},
+{data:{source:'Stage-27',target:'Stage-25'}},
+{data:{source:'Stage-11',target:'Stage-3'}},
+{data:{source:'Stage-2',target:'Stage-3'}},
+{data:{source:'Stage-39',target:'Stage-19'}},
+{data:{source:'Stage-55',target:'Stage-52'}},
+{data:{source:'Stage-30',target:'Stage-31'}},
+{data:{source:'Stage-24',target:'Stage-25'}},
+{data:{source:'Stage-16',target:'Stage-17'}},
+{data:{source:'Stage-48',target:'Stage-45'}},
+{data:{source:'Stage-7',target:'Stage-0'}},
+{data:{source:'Stage-29',target:'Stage-30'}},
+{data:{source:'Stage-14',target:'Stage-15'}},
+{data:{source:'Stage-37',target:'Stage-38'}},
+{data:{source:'Stage-43',target:'Stage-44'}},
+{data:{source:'Stage-45',target:'Stage-46'}},
+{data:{source:'Stage-40',target:'Stage-38'}},
+{data:{source:'Stage-32',target:'Stage-19'}}
+        ]                        
+    },
+				});
+            cy.maxZoom(1.5);
+            cy.minZoom(0.5);
+			});
+		</script>
+	</head>
+	<body>
+		<h1>[{table_name}] 's {plot_type}</h1>
+          看文本格式依赖:Ctrl+U 翻页到底部 
+		<!-- <div>文本格式依赖:
+	{html_tbl}</div>         -->
+        <div id="cy"></div>
+	</body>
+</html>

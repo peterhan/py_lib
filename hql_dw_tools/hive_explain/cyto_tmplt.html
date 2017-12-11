@@ -1,0 +1,91 @@
+<!DOCTYPE>
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<title>{table_name}</title>
+		<!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"> -->
+		<script src="../js/jquery-2.0.3.min.js"></script>
+		<script src="../js/cytoscape.min.js"></script>		
+		<script src="../js/dagre.min.js"></script>
+		<script src="../js/cytoscape-dagre.js"></script>
+		<style>
+			body {
+				font-family: helvetica;
+				font-size: 14px;
+			}
+
+			#cy {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 999;
+			}
+
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+			}
+		</style>
+
+		<script>
+			$(function(){                
+				var cy = window.cy = cytoscape({
+					container: document.getElementById('cy'),                
+                    //boxSelectionEnabled: true,
+                    //autounselectify: true,
+
+					layout: {
+						name: 'dagre'
+					},
+
+					style: [
+						{
+							selector: 'node',
+							style: {
+								'content': 'data(label)',
+								'text-opacity': 0.5,
+								'text-valign': 'center',
+								'text-halign': 'right',
+								'background-color': '#11479e',
+                                'text-wrap': 'wrap',
+                                'text-max-width': 800
+							}
+						},
+
+						{
+							selector: 'edge',
+							style: {
+								'width': 4,
+								'target-arrow-shape': 'triangle',
+								'line-color': '#9dbaea',
+								'target-arrow-color': '#9dbaea',
+								'curve-style': 'bezier'
+							}
+						}
+					],
+                    /*
+					elements: {
+						nodes: [
+							{ data: { id: 'n0' } },							
+						],
+						edges: [
+							{ data: { source: 'n0', target: 'n1' } },							
+						]                        
+					},*/
+                    {data_js_injection}
+				});
+            cy.maxZoom(1.5);
+            cy.minZoom(0.5);
+			});
+		</script>
+	</head>
+	<body>
+		<h1>[{table_name}] 's {plot_type}</h1>
+          看文本格式依赖:Ctrl+U 翻页到底部 
+		<!-- <div>文本格式依赖:
+	{html_tbl}</div>         -->
+        <div id="cy"></div>
+	</body>
+</html>

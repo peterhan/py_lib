@@ -1,0 +1,145 @@
+<!DOCTYPE>
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<title>dim.dim_usc_spec</title>
+		<!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"> -->
+		<script src="../js/jquery-2.0.3.min.js"></script>
+		<script src="../js/cytoscape.min.js"></script>		
+		<script src="../js/dagre.min.js"></script>
+		<script src="../js/cytoscape-dagre.js"></script>
+		<style>
+			body {
+				font-family: helvetica;
+				font-size: 14px;
+			}
+
+			#cy {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 999;
+			}
+
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+			}
+		</style>
+
+		<script>
+			$(function(){                
+				var cy = window.cy = cytoscape({
+					container: document.getElementById('cy'),                
+                    //boxSelectionEnabled: true,
+                    //autounselectify: true,
+
+					layout: {
+						name: 'dagre'
+					},
+
+					style: [
+						{
+							selector: 'node',
+							style: {
+								'content': 'data(label)',
+								'text-opacity': 0.5,
+								'text-valign': 'center',
+								'text-halign': 'right',
+								'background-color': '#11479e',
+                                'text-wrap': 'wrap',
+                                'text-max-width': 800
+							}
+						},
+
+						{
+							selector: 'edge',
+							style: {
+								'width': 4,
+								'target-arrow-shape': 'triangle',
+								'line-color': '#9dbaea',
+								'target-arrow-color': '#9dbaea',
+								'curve-style': 'bezier'
+							}
+						}
+					],
+                    /*
+					elements: {
+						nodes: [
+							{ data: { id: 'n0' } },							
+						],
+						edges: [
+							{ data: { source: 'n0', target: 'n1' } },							
+						]                        
+					},*/
+                        elements: {
+        nodes: [
+            {data:{id:'mds.mds_usc_dealer_data_day',label:'mds.mds_usc_dealer_data_day\n'}},
+{data:{id:'mds.mds_usc_sales_leads_info',label:'mds.mds_usc_sales_leads_info\n'}},
+{data:{id:'mds.mds_usc_flw_dealer_car_show_pc_day',label:'mds.mds_usc_flw_dealer_car_show_pc_day\n'}},
+{data:{id:'mds.mds_usc_dealer_lead_handle',label:'mds.mds_usc_dealer_lead_handle\n'}},
+{data:{id:'mds.mds_usc_flw_dealer_car_click_pc_day',label:'mds.mds_usc_flw_dealer_car_click_pc_day\n'}},
+{data:{id:'mds.mds_usc_sales_leads_phone_info',label:'mds.mds_usc_sales_leads_phone_info\n'}},
+{data:{id:'mds.mds_usc_carinfo',label:'mds.mds_usc_carinfo\n'}},
+{data:{id:'dim.dim_usc_spec',label:'dim.dim_usc_spec\n'}},
+{data:{id:'mds.mds_usc_flw_carinfo_day',label:'mds.mds_usc_flw_carinfo_day\n'}},
+{data:{id:'mds.mds_usc_sales_leads_callcenter_info',label:'mds.mds_usc_sales_leads_callcenter_info\n'}},
+{data:{id:'mds.mds_usc_sales_leads_old_info',label:'mds.mds_usc_sales_leads_old_info\n'}}							
+        ],
+        edges: [
+            {data:{source:'mds.mds_usc_sales_leads_phone_info',target:'mds.mds_usc_dealer_lead_handle'}},
+{data:{source:'mds.mds_usc_sales_leads_old_info',target:'mds.mds_usc_sales_leads_phone_info'}},
+{data:{source:'mds.mds_usc_sales_leads_phone_info',target:'mds.mds_usc_dealer_data_day'}},
+{data:{source:'mds.mds_usc_flw_dealer_car_click_pc_day',target:'mds.mds_usc_flw_carinfo_day'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_sales_leads_info'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_sales_leads_phone_info'}},
+{data:{source:'mds.mds_usc_flw_carinfo_day',target:'mds.mds_usc_dealer_data_day'}},
+{data:{source:'dim.dim_usc_spec',target:'mds.mds_usc_sales_leads_old_info'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_dealer_data_day'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_sales_leads_old_info'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_sales_leads_callcenter_info'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_flw_dealer_car_show_pc_day'}},
+{data:{source:'mds.mds_usc_dealer_lead_handle',target:'mds.mds_usc_dealer_data_day'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_flw_dealer_car_click_pc_day'}},
+{data:{source:'mds.mds_usc_carinfo',target:'mds.mds_usc_flw_carinfo_day'}},
+{data:{source:'mds.mds_usc_flw_dealer_car_show_pc_day',target:'mds.mds_usc_flw_carinfo_day'}},
+{data:{source:'dim.dim_usc_spec',target:'mds.mds_usc_carinfo'}}
+        ]                        
+    },
+				});
+            cy.maxZoom(1.5);
+            cy.minZoom(0.5);
+			});
+		</script>
+	</head>
+	<body>
+		<h1>[dim.dim_usc_spec] 's down</h1>
+          看文本格式依赖:Ctrl+U 翻页到底部 
+		<!-- <div>文本格式依赖:
+	<table border="0.5">
+
+mds.mds_usc_sales_leads_phone_info => mds.mds_usc_dealer_lead_handle 
+mds.mds_usc_sales_leads_old_info => mds.mds_usc_sales_leads_phone_info 
+mds.mds_usc_sales_leads_phone_info => mds.mds_usc_dealer_data_day 
+mds.mds_usc_flw_dealer_car_click_pc_day => mds.mds_usc_flw_carinfo_day 
+mds.mds_usc_carinfo => mds.mds_usc_sales_leads_info 
+mds.mds_usc_carinfo => mds.mds_usc_sales_leads_phone_info 
+mds.mds_usc_flw_carinfo_day => mds.mds_usc_dealer_data_day 
+dim.dim_usc_spec => mds.mds_usc_sales_leads_old_info 
+mds.mds_usc_carinfo => mds.mds_usc_dealer_data_day 
+mds.mds_usc_carinfo => mds.mds_usc_sales_leads_old_info 
+mds.mds_usc_carinfo => mds.mds_usc_sales_leads_callcenter_info 
+mds.mds_usc_carinfo => mds.mds_usc_flw_dealer_car_show_pc_day 
+mds.mds_usc_dealer_lead_handle => mds.mds_usc_dealer_data_day 
+mds.mds_usc_carinfo => mds.mds_usc_flw_dealer_car_click_pc_day 
+mds.mds_usc_carinfo => mds.mds_usc_flw_carinfo_day 
+mds.mds_usc_flw_dealer_car_show_pc_day => mds.mds_usc_flw_carinfo_day 
+dim.dim_usc_spec => mds.mds_usc_carinfo 
+
+
+</table></div>         -->
+        <div id="cy"></div>
+	</body>
+</html>
