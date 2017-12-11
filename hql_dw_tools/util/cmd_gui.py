@@ -7,6 +7,19 @@ import glob
 
 SLEEP_PAUSE = 1
 
+    
+def get_date(fmt='%Y-%m-%d',base=datetime.datetime.now(), isobj=False, **kwargs ):
+    i_str2date=lambda str_date,fmt: datetime.datetime.fromtimestamp(time.mktime(time.strptime(str_date,fmt)))
+    if isinstance(base,basestring):
+        dateobj= i_str2date(base,fmt)+ datetime.timedelta( **kwargs)
+    else:
+        dateobj = base + datetime.timedelta( **kwargs)
+    if isobj: 
+        return dateobj
+    else: 
+        return dateobj.strftime(fmt)
+        
+    
 def get_timestamp(fmt='%Y%m%d'):
     return datetime.datetime.now().strftime(fmt)
     
@@ -16,6 +29,26 @@ def pause(IS_INTERACTIVE=False):
     else:
         time.sleep(SLEEP_PAUSE)
         
+def expand_dt(dt):
+    if ',' in dt:
+        dt=dt.split(',')
+    if '=>' in dt:
+        start,end=dt.split('=>',1)
+        dt=[]
+        edt=''
+        i=0
+        if start <= end:
+            while edt<end:
+                edt=get_date(base=start,days=i)
+                dt.append(edt)
+                i+=1
+        else:
+            edt=start
+            while edt >= end:
+                edt=get_date(base=start,days=-1*i)
+                dt.append(edt)
+                i+=1
+    return dt
     
 def get_common_prefix(strs):
     if len(strs)==1:
@@ -169,6 +202,9 @@ def select_files(path,prompt='',suffix='txt'):
     return ids,selected_files
     
 if __name__=='__main__':
+    print expand_dt('2017-01-01,2017-02-11')
+    print expand_dt('2017-02-01=>2017-02-11')
+    print expand_dt('2017-02-11=>2017-02-05')
     print select_files('..\\sh\\.','Select shell file','sh')
     print get_user_select_job_list('test_filter_select',['a','b','c'],'sh')
     
