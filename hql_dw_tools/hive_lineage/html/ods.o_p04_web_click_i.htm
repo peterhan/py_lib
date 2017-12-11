@@ -1,0 +1,158 @@
+<!DOCTYPE>
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<title>ods.o_p04_web_click_i</title>
+		<!-- <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1"> -->
+		<script src="../js/jquery-2.0.3.min.js"></script>
+		<script src="../js/cytoscape.min.js"></script>		
+		<script src="../js/dagre.min.js"></script>
+		<script src="../js/cytoscape-dagre.js"></script>
+		<style>
+			body {
+				font-family: helvetica;
+				font-size: 14px;
+			}
+
+			#cy {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 999;
+			}
+
+			h1 {
+				opacity: 0.5;
+				font-size: 1em;
+			}
+		</style>
+
+		<script>
+			$(function(){                
+				var cy = window.cy = cytoscape({
+					container: document.getElementById('cy'),                
+                    //boxSelectionEnabled: true,
+                    //autounselectify: true,
+
+					layout: {
+						name: 'dagre'
+					},
+
+					style: [
+						{
+							selector: 'node',
+							style: {
+								'content': 'data(label)',
+								'text-opacity': 0.5,
+								'text-valign': 'center',
+								'text-halign': 'right',
+								'background-color': '#11479e',
+                                'text-wrap': 'wrap',
+                                'text-max-width': 800
+							}
+						},
+
+						{
+							selector: 'edge',
+							style: {
+								'width': 4,
+								'target-arrow-shape': 'triangle',
+								'line-color': '#9dbaea',
+								'target-arrow-color': '#9dbaea',
+								'curve-style': 'bezier'
+							}
+						}
+					],
+                    /*
+					elements: {
+						nodes: [
+							{ data: { id: 'n0' } },							
+						],
+						edges: [
+							{ data: { source: 'n0', target: 'n1' } },							
+						]                        
+					},*/
+                        elements: {
+        nodes: [
+            {data:{id:'mds.mds_media_cheplus_video_play_dtl',label:'mds.mds_media_cheplus_video_play_dtl\n'}},
+{data:{id:'mds.mds_media_cookie_video_play_day',label:'mds.mds_media_cookie_video_play_day\n'}},
+{data:{id:'ads.ads_media_article_app_expo_evaluate_index',label:'ads.ads_media_article_app_expo_evaluate_index\n'}},
+{data:{id:'ads.ads_rcmd_app_effect_day',label:'ads.ads_rcmd_app_effect_day\n'}},
+{data:{id:'ads.ads_media_youchuang_rcmd_expo_week',label:'ads.ads_media_youchuang_rcmd_expo_week\n'}},
+{data:{id:'ads.ads_mango_bhv_user_series_30d',label:'ads.ads_mango_bhv_user_series_30d\n'}},
+{data:{id:'ads.ads_da_inside_hotseries_rank_day',label:'ads.ads_da_inside_hotseries_rank_day\n'}},
+{data:{id:'mds.mds_media_video_play_day',label:'mds.mds_media_video_play_day\n'}},
+{data:{id:'mds.mds_media_radio_program_info',label:'mds.mds_media_radio_program_info\n'}},
+{data:{id:'ads.ads_da_chejiahao_hotseries_day',label:'ads.ads_da_chejiahao_hotseries_day\n'}},
+{data:{id:'mds.mds_usr_cookie_series_bhv_day',label:'mds.mds_usr_cookie_series_bhv_day\n'}},
+{data:{id:'ads.ads_mango_bhv_user_series_7d',label:'ads.ads_mango_bhv_user_series_7d\n'}},
+{data:{id:'mds.mds_media_video_play_dtl',label:'mds.mds_media_video_play_dtl\n'}},
+{data:{id:'mds.mds_media_video_app_expo_click_dtl',label:'mds.mds_media_video_app_expo_click_dtl\n'}},
+{data:{id:'mds.mds_media_video_original_play_dtl',label:'mds.mds_media_video_original_play_dtl\n'}},
+{data:{id:'ods.o_p04_web_click_i',label:'ods.o_p04_web_click_i\n'}},
+{data:{id:'mds.mds_media_cheplus_audio_play_dtl',label:'mds.mds_media_cheplus_audio_play_dtl\n'}},
+{data:{id:'ads.ads_da_article_hotseries_day',label:'ads.ads_da_article_hotseries_day\n'}},
+{data:{id:'mds.mds_media_pcm_video_play_dtl',label:'mds.mds_media_pcm_video_play_dtl\n'}},
+{data:{id:'ads.ads_media_youchuang_flw_day',label:'ads.ads_media_youchuang_flw_day\n'}}							
+        ],
+        edges: [
+            {data:{source:'mds.mds_media_cookie_video_play_day',target:'mds.mds_media_video_app_expo_click_dtl'}},
+{data:{source:'ods.o_p04_web_click_i',target:'mds.mds_media_video_play_dtl'}},
+{data:{source:'mds.mds_media_pcm_video_play_dtl',target:'mds.mds_media_cheplus_audio_play_dtl'}},
+{data:{source:'mds.mds_media_cookie_video_play_day',target:'mds.mds_usr_cookie_series_bhv_day'}},
+{data:{source:'ads.ads_rcmd_app_effect_day',target:'ads.ads_media_youchuang_rcmd_expo_week'}},
+{data:{source:'ads.ads_da_inside_hotseries_rank_day',target:'ads.ads_da_chejiahao_hotseries_day'}},
+{data:{source:'mds.mds_usr_cookie_series_bhv_day',target:'ads.ads_mango_bhv_user_series_30d'}},
+{data:{source:'mds.mds_usr_cookie_series_bhv_day',target:'ads.ads_media_article_app_expo_evaluate_index'}},
+{data:{source:'mds.mds_media_video_original_play_dtl',target:'mds.mds_media_video_play_day'}},
+{data:{source:'ads.ads_da_inside_hotseries_rank_day',target:'ads.ads_da_article_hotseries_day'}},
+{data:{source:'mds.mds_usr_cookie_series_bhv_day',target:'ads.ads_mango_bhv_user_series_7d'}},
+{data:{source:'mds.mds_usr_cookie_series_bhv_day',target:'ads.ads_da_inside_hotseries_rank_day'}},
+{data:{source:'ods.o_p04_web_click_i',target:'mds.mds_media_pcm_video_play_dtl'}},
+{data:{source:'mds.mds_media_video_play_dtl',target:'mds.mds_media_cookie_video_play_day'}},
+{data:{source:'ads.ads_rcmd_app_effect_day',target:'ads.ads_media_youchuang_flw_day'}},
+{data:{source:'mds.mds_media_pcm_video_play_dtl',target:'mds.mds_media_cheplus_video_play_dtl'}},
+{data:{source:'mds.mds_media_video_play_dtl',target:'ads.ads_rcmd_app_effect_day'}},
+{data:{source:'ods.o_p04_web_click_i',target:'mds.mds_media_radio_program_info'}},
+{data:{source:'mds.mds_media_pcm_video_play_dtl',target:'mds.mds_media_video_original_play_dtl'}}
+        ]                        
+    },
+				});
+            cy.maxZoom(1.5);
+            cy.minZoom(0.5);
+			});
+		</script>
+	</head>
+	<body>
+		<h1>[ods.o_p04_web_click_i] 's down</h1>
+          看文本格式依赖:Ctrl+U 翻页到底部 
+		<!-- <div>文本格式依赖:
+	<table border="0.5">
+
+mds.mds_media_cookie_video_play_day => mds.mds_media_video_app_expo_click_dtl 
+ods.o_p04_web_click_i => mds.mds_media_video_play_dtl 
+mds.mds_media_pcm_video_play_dtl => mds.mds_media_cheplus_audio_play_dtl 
+mds.mds_media_cookie_video_play_day => mds.mds_usr_cookie_series_bhv_day 
+ads.ads_rcmd_app_effect_day => ads.ads_media_youchuang_rcmd_expo_week 
+ads.ads_da_inside_hotseries_rank_day => ads.ads_da_chejiahao_hotseries_day 
+mds.mds_usr_cookie_series_bhv_day => ads.ads_mango_bhv_user_series_30d 
+mds.mds_usr_cookie_series_bhv_day => ads.ads_media_article_app_expo_evaluate_index 
+mds.mds_media_video_original_play_dtl => mds.mds_media_video_play_day 
+ads.ads_da_inside_hotseries_rank_day => ads.ads_da_article_hotseries_day 
+mds.mds_usr_cookie_series_bhv_day => ads.ads_mango_bhv_user_series_7d 
+mds.mds_usr_cookie_series_bhv_day => ads.ads_da_inside_hotseries_rank_day 
+ods.o_p04_web_click_i => mds.mds_media_pcm_video_play_dtl 
+mds.mds_media_video_play_dtl => mds.mds_media_cookie_video_play_day 
+ads.ads_rcmd_app_effect_day => ads.ads_media_youchuang_flw_day 
+mds.mds_media_pcm_video_play_dtl => mds.mds_media_cheplus_video_play_dtl 
+mds.mds_media_video_play_dtl => ads.ads_rcmd_app_effect_day 
+ods.o_p04_web_click_i => mds.mds_media_radio_program_info 
+mds.mds_media_pcm_video_play_dtl => mds.mds_media_video_original_play_dtl 
+
+
+</table></div>         -->
+        <div id="cy"></div>
+	</body>
+</html>
