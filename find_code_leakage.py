@@ -1,6 +1,6 @@
 import os
 import re
-pat=re.compile('.*\.com\W')
+pat=re.compile('.*\.com\W|AzkabanAPI')
 def find_pitfall(fpath):
     if fpath.endswith('.js'):
         return
