@@ -83,7 +83,7 @@ def parenthetic_contents(string):
 def parse_hql(hql):
     '''parse a series of hql'''
     file_info={'depend_table':[],'with_alias':[],'operate_table':[],'create_function':[],'add_jar':[]}
-    print sqlparse.format(hql,reindent=True,keyword_case='upper',identifier_case='lower',wrap_after=80)
+    print sqlparse.format(hql,reindent=True,keyword_case='upper',identifier_case='lower',wrap_after=80,encoding='utf8').encode('gbk','ignore')
         
         
     
