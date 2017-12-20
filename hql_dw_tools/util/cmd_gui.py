@@ -92,15 +92,15 @@ def parse_id_list(choices):
         is_list=False
     return is_list,choices
     
-def select_choices_from_list(choices,alist):
+def select_choices_from_list(choices,candidate_list):
     is_list,choices=parse_id_list(choices)
     if is_list:
         idx_choices = []
         value_choices = []
         for e_choice in choices:            
-            if e_choice<len(alist):                
+            if e_choice<len(candidate_list):                
                 idx_choices.append(e_choice)
-                value_choices.append(alist[e_choice])
+                value_choices.append(candidate_list[e_choice])
             else:
                 return 'out_of_bound',False
         return idx_choices,value_choices
@@ -109,29 +109,29 @@ def select_choices_from_list(choices,alist):
             pass
         elif choices=='all':
             all_id=[]
-            for i in range(len(alist)):
+            for i in range(len(candidate_list)):
                 all_id.append(i)
-            return all_id,alist
+            return all_id,candidate_list
         elif choices in ('q','quit'):
             print 'Thanks for use, Bye!'
             sys.exit(0)
             return 'quit',choices
         return 'not_in_list',choices
     
-def get_user_select(prompt,alist,print_colnum=1,common_prefix=None,sort_list=True):
+def get_user_select(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choice
     print '\n[%s]'%prompt
     if sort_list:
-        alist=sorted(alist)
-    print print_table(alist,print_colnum,common_prefix)    
+        candidate_list=sorted(candidate_list)
+    print print_table(candidate_list,print_colnum,common_prefix)    
     print '["q"','to quit]'
     choice=raw_input('[Input Number]>>')    
-    if len(alist)==0:
+    if len(candidate_list)==0:
         return 'empty_list',choice
     is_list,choice= parse_id_list(choice)
     if is_list:
-        if choice<len(alist):
-            return 'succ_%s'%choice,alist[choice]
+        if choice<len(candidate_list):
+            return 'succ_%s'%choice,candidate_list[choice]
         else:
             return 'out_of_bound',False
     else:
@@ -141,25 +141,25 @@ def get_user_select(prompt,alist,print_colnum=1,common_prefix=None,sort_list=Tru
             return 'quit',choice
         return 'not_in_list',choice
 
-def get_user_select_list(prompt,alist,print_colnum=1,common_prefix=None,sort_list=True):
+def get_user_select_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choices
     print '\n[%s]'%prompt
-    alist=sorted(alist)
-    print print_table(alist,print_colnum,common_prefix)  
+    candidate_list=sorted(candidate_list)
+    print print_table(candidate_list,print_colnum,common_prefix)  
     print '["q"','to quit.]'
     choices = raw_input('[Input Multi Number]>>')  
-    if len(alist)==0:
+    if len(candidate_list)==0:
         return 'empty_list',choices
-    return select_choices_from_list(choices,alist)
+    return select_choices_from_list(choices,candidate_list)
         
 def get_job_name(job_path):
     return job_path.split('/')[-1].split('.')[0]
     
-def get_user_select_job_list(prompt,alist,print_colnum=1,common_prefix=None,sort_list=True):
+def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choices
     print '\n[%s]'%prompt
-    alist=sorted(alist)
-    short_list=map(get_job_name,alist)
+    candidate_list=sorted(candidate_list)
+    short_list=map(get_job_name,candidate_list)
     print '[Full JobList ]:'
     for i,elm in enumerate(short_list):
         print elm+',',        
@@ -170,25 +170,25 @@ def get_user_select_job_list(prompt,alist,print_colnum=1,common_prefix=None,sort
         filters=map(lambda x:x.strip(),filters.split(','))
     # use filter to filter select job
     if filters is not None:
-        new_alist=[]
-        alist_dict=dict(zip(short_list,alist))
-        keys=alist_dict.keys()
+        new_candidate_list=[]
+        candidate_list_dict=dict(zip(short_list,candidate_list))
+        keys=candidate_list_dict.keys()
         keys_not_found=set(filters)-set(keys)
         found_keys=set(keys).intersection(filters)
         for key in found_keys:
-            value=alist_dict[key]
+            value=candidate_list_dict[key]
             print '[Matched pattern]:',value
-            new_alist.append(value)
+            new_candidate_list.append(value)
         print '[Not found pattern]:',list(keys_not_found)
-        alist=new_alist
+        candidate_list=new_candidate_list
     ## select job to operation
-    print print_table(alist,print_colnum,common_prefix)
+    print print_table(candidate_list,print_colnum,common_prefix)
     print '["q"','to quit.]'
     choices = raw_input('[Input Multi Number]>>')  
-    if len(alist)==0:
+    if len(candidate_list)==0:
         return 'empty_list',choices
     ##
-    return select_choices_from_list(choices,alist)
+    return select_choices_from_list(choices,candidate_list)
         
         
 def select_files(path,prompt='',suffix='txt'):
