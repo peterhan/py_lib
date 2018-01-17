@@ -30,13 +30,16 @@ def pause(IS_INTERACTIVE=False):
         time.sleep(SLEEP_PAUSE)
         
 def expand_dt(dt):
+    # escape
+    if dt is None:
+        return dt
+    # date list
     if ',' in dt:
         dt=dt.split(',')
+    # date range
     if '=>' in dt:
         start,end=dt.split('=>',1)
-        dt=[]
-        edt=''
-        i=0
+        dt,edt,i=[],'',0        
         if start <= end:
             while edt<end:
                 edt=get_date(base=start,days=i)
@@ -58,8 +61,8 @@ def get_common_prefix(strs):
     nstrs=[st.split('/')[-1] for st in strs]
     return prefix,nstrs
 
-def print_table(seq, columns=2,fold_str=False):
-    if fold_str:
+def print_table(seq, columns=2,common_prefix=None):
+    if common_prefix:
         prefix,seq = get_common_prefix(seq)
         table = ' \n\n [Common prefix is:  %s] \n\n'%prefix
     else:
@@ -78,109 +81,114 @@ def print_table(seq, columns=2,fold_str=False):
         table += '\n'
     return table.strip('\n')
 
-def get_user_select(prompt,alist,print_colnum=1,fold_str=False,sort_list=True):
+def parse_id_list(choices):
+    try:        
+        choices = map(int, choices.replace(',',' ').split())
+        is_list=True
+        if len(choices)==1:
+            choices=choices[0]
+    except Exception as e:
+        # print '[List Select Exception]:',e,type(e)
+        is_list=False
+    return is_list,choices
+    
+def select_choices_from_list(choices,candidate_list):
+    is_list,choices=parse_id_list(choices)
+    if is_list:
+        idx_choices = []
+        value_choices = []
+        for e_choice in choices:            
+            if e_choice<len(candidate_list):                
+                idx_choices.append(e_choice)
+                value_choices.append(candidate_list[e_choice])
+            else:
+                return 'out_of_bound',False
+        return idx_choices,value_choices
+    else:
+        if choices.startswith('job:'):
+            pass
+        elif choices=='all':
+            all_id=[]
+            for i in range(len(candidate_list)):
+                all_id.append(i)
+            return all_id,candidate_list
+        elif choices in ('q','quit'):
+            print 'Thanks for use, Bye!'
+            sys.exit(0)
+            return 'quit',choices
+        return 'not_in_list',choices
+    
+def get_user_select(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choice
     print '\n[%s]'%prompt
     if sort_list:
-        alist=sorted(alist)
-    print print_table(alist,print_colnum,fold_str)    
+        candidate_list=sorted(candidate_list)
+    print print_table(candidate_list,print_colnum,common_prefix)    
     print '["q"','to quit]'
     choice=raw_input('[Input Number]>>')    
-    if len(alist)==0:
+    if len(candidate_list)==0:
         return 'empty_list',choice
-    try:
-        choice=int(choice)
-        if choice<len(alist):
-            return 'succ_%s'%choice,alist[choice]
+    is_list,choice= parse_id_list(choice)
+    if is_list:
+        if choice<len(candidate_list):
+            return 'succ_%s'%choice,candidate_list[choice]
         else:
             return 'out_of_bound',False
-    except:
+    else:
         if choice in ('q','quit'):
             print 'Thanks for use, Bye!'
             sys.exit(0)
             return 'quit',choice
         return 'not_in_list',choice
 
-def get_user_select_list(prompt,alist,print_colnum=1,fold_str=False,sort_list=True):
+def get_user_select_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choices
     print '\n[%s]'%prompt
-    alist=sorted(alist)
-    print print_table(alist,print_colnum,fold_str)  
+    candidate_list=sorted(candidate_list)
+    print print_table(candidate_list,print_colnum,common_prefix)  
     print '["q"','to quit.]'
     choices = raw_input('[Input Multi Number]>>')  
-    if len(alist)==0:
+    if len(candidate_list)==0:
         return 'empty_list',choices
-    try:        
-        choices = map(int, choices.replace(',',' ').split())
-        ichoices = []
-        rchoices = []
-        for e_choice in choices:            
-            if e_choice<len(alist):                
-                ichoices.append(e_choice)
-                rchoices.append(alist[e_choice])
-            else:
-                return 'out_of_bound',False
-        return ichoices,rchoices
-    except:
-        if choices in ('q','quit'):
-            print 'Thanks for use, Bye!'
-            sys.exit(0)
-            return 'quit',choices        
-        return 'not_in_list',choices
+    return select_choices_from_list(choices,candidate_list)
         
 def get_job_name(job_path):
     return job_path.split('/')[-1].split('.')[0]
     
-def get_user_select_job_list(prompt,alist,print_colnum=1,fold_str=False,sort_list=True):
+def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choices
     print '\n[%s]'%prompt
-    alist=sorted(alist)
-    short_list=map(get_job_name,alist)
-    print '[Unfiltered JobList ]:'
+    candidate_list=sorted(candidate_list)
+    short_list=map(get_job_name,candidate_list)
+    print '[Full JobList ]:'
     for i,elm in enumerate(short_list):
         print elm+',',        
-    filters = raw_input('[(default no filter, filter string split by ",")]\n[Filters Input]:')
+    filters = raw_input('\n[(Filter pattern split by ",",Empty will select all. )]\n[Filter Patterns]:')
     if filters=='':
         filters=None
     else:
         filters=map(lambda x:x.strip(),filters.split(','))
     # use filter to filter select job
     if filters is not None:
-        new_alist=[]
-        alist_dict=dict(zip(short_list,alist))
-        keys=alist_dict.keys()
+        new_candidate_list=[]
+        candidate_list_dict=dict(zip(short_list,candidate_list))
+        keys=candidate_list_dict.keys()
         keys_not_found=set(filters)-set(keys)
         found_keys=set(keys).intersection(filters)
         for key in found_keys:
-            value=alist_dict[key]
-            print '[Matched]:',value
-            new_alist.append(value)
-        print '[not found jobs]',list(keys_not_found)
-        alist=new_alist
-    print print_table(alist,print_colnum,fold_str)  
+            value=candidate_list_dict[key]
+            print '[Matched pattern]:',value
+            new_candidate_list.append(value)
+        print '[Not found pattern]:',list(keys_not_found)
+        candidate_list=new_candidate_list
+    ## select job to operation
+    print print_table(candidate_list,print_colnum,common_prefix)
     print '["q"','to quit.]'
     choices = raw_input('[Input Multi Number]>>')  
-    if len(alist)==0:
-        return 'empty_list',choices    
-    try:        
-        choices = map(int, choices.replace(',',' ').split())
-        ichoices = []
-        rchoices = []
-        for e_choice in choices:            
-            if e_choice<len(alist):                
-                ichoices.append(e_choice)
-                rchoices.append(alist[e_choice])
-            else:
-                return 'out_of_bound',False
-        return ichoices,rchoices
-    except:
-        if choices.startswith('job:'):
-            pass
-        elif choices in ('q','quit'):
-            print 'Thanks for use, Bye!'
-            sys.exit(0)
-            return 'quit',choices
-        return 'not_in_list',choices
+    if len(candidate_list)==0:
+        return 'empty_list',choices
+    ##
+    return select_choices_from_list(choices,candidate_list)
         
         
 def select_files(path,prompt='',suffix='txt'):
@@ -205,6 +213,6 @@ if __name__=='__main__':
     print expand_dt('2017-01-01,2017-02-11')
     print expand_dt('2017-02-01=>2017-02-11')
     print expand_dt('2017-02-11=>2017-02-05')
-    print select_files('..\\sh\\.','Select shell file','sh')
-    print get_user_select_job_list('test_filter_select',['a','b','c'],'sh')
+    # print select_files('..\\sh\\.','Select shell file','sh')
+    print get_user_select_job_list('test_filter_select',['a','b','c'],print_colnum=1,common_prefix='sh')
     
