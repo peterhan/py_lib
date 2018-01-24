@@ -123,13 +123,13 @@ def parse_hql(hql):
                 file_info['with_alias'].append(alias_name)
                 # find 2nd,3rd.. with clause
                 for j in range(i,len_flat_toks):
-                    if flat_toks[j].value=='INSERT':
+                    if flat_toks[j].value.upper()=='INSERT':
                         logging.debug( 'with break on insert')
                         break
-                    if flat_toks[j].value==')' and flat_toks[j+1].value=='SELECT':
+                    if flat_toks[j].value==')' and flat_toks[j+1].value.upper()=='SELECT':
                         logging.debug('with break on )select')
                         break
-                    if flat_toks[j].value==',' and flat_toks[j+2].value.upper()=='AS' and flat_toks[j+3].value.upper()=='(':
+                    if flat_toks[j].value==',' and flat_toks[j+2].value.upper()=='AS' and flat_toks[j+3].value=='(':
                         alias =flat_toks[j+1].value
                         logging.debug( '[WITH Cluase Series Table]:%s',alias)
                         file_info['with_alias'].append(alias)
