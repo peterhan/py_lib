@@ -156,12 +156,16 @@ class AzkabanAPI():
         logger.debug('[Login success]:%s',self.session_id)
         return self.session_id
         
-    def fetch_project_list(self):    
+    def fetch_project_list(self,is_all=False):    
         '''get all project list'''
         data={'session.id':self.session_id}
-        projs=[]
+        projs={}
         pat=re.compile(r'"/manager\?project=(\w*)"')
-        response = self.get('/index',data,is_html=True)
+        pat_user=re.compile(r'by <strong>(\w+)</strong>')
+        if is_all:
+            response = self.get('/index?all',data,is_html=True)
+        else:
+            response = self.get('/index',data,is_html=True)
         logger.debug('[Fetch_project_list]html_len:%s', len(response.text))
         for line in response.text.split('\n'):
             matched=pat.search(line)
@@ -170,7 +174,13 @@ class AzkabanAPI():
                 # print proj
                 if len(proj)==0:
                     continue
-                projs.append(proj) 
+                projs[proj]=''
+            else:
+                matched=pat_user.search(line)
+                if matched:
+                    user=matched.group(1)
+                    # print proj
+                    projs[proj]= user
         return projs   
     
     def upload_project(self,project,filename,safekey=''):
