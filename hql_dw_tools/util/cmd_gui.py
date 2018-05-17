@@ -92,29 +92,39 @@ def parse_id_list(choices):
     
 def select_choices_from_list(choices,candidate_list):
     is_id_list,choices=parse_id_list(choices)
+    # multi id input
     if is_id_list:
         idx_choices = []
         value_choices = []
-        for e_choice in choices:            
-            if e_choice<len(candidate_list):                
-                idx_choices.append(e_choice)
-                value_choices.append(candidate_list[e_choice])
+        for choice in choices:            
+            if choice<len(candidate_list):                
+                idx_choices.append(choice)
+                value_choices.append(candidate_list[choice])
             else:
-                return 'out_of_bound',False
-        return idx_choices,value_choices
+                return 'out_of_bound',[],[]
+        return 'succ_',idx_choices,value_choices
+    ## not multi id input
     else:
-        if choices.startswith('job:'):
-            pass
+        if choices.startswith('&'):
+            ## multi select logic
+            choices = choices.strip('&').replace(' ',',').split(',')
+            ids = []
+            cands = []
+            for choice in choices:
+                if choice in candidate_list:
+                    ids.append(candidate_list.index(choice))
+                    cands.append(choice)
+            return 'succ_',ids,cands
         elif choices=='all' or choices=='*':
             all_id=[]
             for i in range(len(candidate_list)):
                 all_id.append(i)
-            return all_id,candidate_list
+            return 'succ_',all_id,candidate_list
         elif choices in ('q','quit'):
             print 'Thanks for use, Bye!'
             sys.exit(0)
-            return 'quit',choices
-        return 'not_in_list',choices
+            return 'quit',choices,choices
+        return 'not_in_list',choices,choices
     
 def get_user_select(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choice
@@ -124,9 +134,7 @@ def get_user_select(prompt,candidate_list,print_colnum=1,common_prefix=None,sort
     print print_cli_table(candidate_list,print_colnum,common_prefix)    
     print '["q"','to quit]'
     choice=raw_input('[Input Number]>>')  
-    status,res = select_choices_from_list(choice,candidate_list)
-    if isinstance(status,list):
-        status='succ_%s'%choice
+    status,_,res = select_choices_from_list(choice,candidate_list)    
     return status,res[0]
     
 
@@ -152,8 +160,10 @@ def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=
     candidate_list=sorted(candidate_list)
     short_list=map(get_job_name,candidate_list)
     print '[Full JobList ]:'
-    for i,elm in enumerate(short_list):
-        print elm+',',        
+    for i,elm in enumerate(sorted(short_list)):
+        print (elm+',').ljust(15),
+        if i>0 and i %4==0:
+            print ''
     filters = raw_input('\n[(Filter pattern split by ",",Empty will select all. )]\n[Filter Patterns]:')
     if filters=='':
         filters=None
@@ -207,5 +217,6 @@ if __name__=='__main__':
     print expand_date('2017-02-01=>2017-02-11')
     print expand_date('2017-02-11=>2017-02-05')
     # print select_files('..\\sh\\.','Select shell file','sh')
-    print get_user_select_job_list('test_filter_select',['a','b','c'],print_colnum=1,common_prefix='sh')
+    print get_user_select_job_list('get_user_select_job_list',['aa','ba','cc'],print_colnum=1,common_prefix='sh')
+    print get_user_select_list('get_user_select_list',['aa','ba','cc'],print_colnum=1,common_prefix='sh')
     
