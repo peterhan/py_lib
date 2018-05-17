@@ -4,6 +4,7 @@ import os
 import datetime
 import time
 import glob
+import fnmatch
 
 SLEEP_PAUSE = 1
 
@@ -19,7 +20,6 @@ def get_date(fmt='%Y-%m-%d',base=datetime.datetime.now(), isobj=False, **kwargs 
     else: 
         return dateobj.strftime(fmt)
         
-    
 def get_timestamp(fmt='%Y%m%d'):
     return datetime.datetime.now().strftime(fmt)
     
@@ -29,7 +29,7 @@ def pause(IS_INTERACTIVE=False):
     else:
         time.sleep(SLEEP_PAUSE)
         
-def expand_dt(dt):
+def expand_date(dt):
     # escape
     if dt is None:
         return dt
@@ -61,7 +61,7 @@ def get_common_prefix(strs):
     nstrs=[st.split('/')[-1] for st in strs]
     return prefix,nstrs
 
-def print_table(seq, columns=2,common_prefix=None):
+def print_cli_table(seq, columns=2,common_prefix=None):
     if common_prefix:
         prefix,seq = get_common_prefix(seq)
         table = ' \n\n [Common prefix is:  %s] \n\n'%prefix
@@ -84,17 +84,15 @@ def print_table(seq, columns=2,common_prefix=None):
 def parse_id_list(choices):
     try:        
         choices = map(int, choices.replace(',',' ').split())
-        is_list=True
-        if len(choices)==1:
-            choices=choices[0]
+        is_id_list=True        
     except Exception as e:
         # print '[List Select Exception]:',e,type(e)
-        is_list=False
-    return is_list,choices
+        is_id_list=False
+    return is_id_list,choices
     
 def select_choices_from_list(choices,candidate_list):
-    is_list,choices=parse_id_list(choices)
-    if is_list:
+    is_id_list,choices=parse_id_list(choices)
+    if is_id_list:
         idx_choices = []
         value_choices = []
         for e_choice in choices:            
@@ -107,7 +105,7 @@ def select_choices_from_list(choices,candidate_list):
     else:
         if choices.startswith('job:'):
             pass
-        elif choices=='all':
+        elif choices=='all' or choices=='*':
             all_id=[]
             for i in range(len(candidate_list)):
                 all_id.append(i)
@@ -123,30 +121,21 @@ def get_user_select(prompt,candidate_list,print_colnum=1,common_prefix=None,sort
     print '\n[%s]'%prompt
     if sort_list:
         candidate_list=sorted(candidate_list)
-    print print_table(candidate_list,print_colnum,common_prefix)    
+    print print_cli_table(candidate_list,print_colnum,common_prefix)    
     print '["q"','to quit]'
-    choice=raw_input('[Input Number]>>')    
-    if len(candidate_list)==0:
-        return 'empty_list',choice
-    is_list,choice= parse_id_list(choice)
-    if is_list:
-        if choice<len(candidate_list):
-            return 'succ_%s'%choice,candidate_list[choice]
-        else:
-            return 'out_of_bound',False
-    else:
-        if choice in ('q','quit'):
-            print 'Thanks for use, Bye!'
-            sys.exit(0)
-            return 'quit',choice
-        return 'not_in_list',choice
+    choice=raw_input('[Input Number]>>')  
+    status,res = select_choices_from_list(choice,candidate_list)
+    if isinstance(status,list):
+        status='succ_%s'%choice
+    return status,res[0]
+    
 
 def get_user_select_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
     # return 'not_in_list',choices
     print '\n[%s]'%prompt
     candidate_list=sorted(candidate_list)
-    print print_table(candidate_list,print_colnum,common_prefix)  
-    print '["q"','to quit.]'
+    print print_cli_table(candidate_list,print_colnum,common_prefix)  
+    print '["q" to quit."all" to select all]'
     choices = raw_input('[Input Multi Number]>>')  
     if len(candidate_list)==0:
         return 'empty_list',choices
@@ -154,8 +143,10 @@ def get_user_select_list(prompt,candidate_list,print_colnum=1,common_prefix=None
         
 def get_job_name(job_path):
     return job_path.split('/')[-1].split('.')[0]
-    
+
+
 def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
+    ## refactor: get common_prefix,make prefix-full_length mapping
     # return 'not_in_list',choices
     print '\n[%s]'%prompt
     candidate_list=sorted(candidate_list)
@@ -172,24 +163,25 @@ def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=
     if filters is not None:
         new_candidate_list=[]
         candidate_list_dict=dict(zip(short_list,candidate_list))
+        # print candidate_list_dict
         keys=candidate_list_dict.keys()
-        keys_not_found=set(filters)-set(keys)
-        found_keys=set(keys).intersection(filters)
+        found_keys=set()
+        for filter in filters:
+            found_keys.update(fnmatch.filter(keys,filter))
         for key in found_keys:
             value=candidate_list_dict[key]
             print '[Matched pattern]:',value
             new_candidate_list.append(value)
-        print '[Not found pattern]:',list(keys_not_found)
+        print '[Not found pattern]:',list(set(keys)-found_keys)
         candidate_list=new_candidate_list
     ## select job to operation
-    print print_table(candidate_list,print_colnum,common_prefix)
-    print '["q"','to quit.]'
+    print print_cli_table(candidate_list,print_colnum,common_prefix)
+    print '["q" to quit."all" to select all]'
     choices = raw_input('[Input Multi Number]>>')  
     if len(candidate_list)==0:
         return 'empty_list',choices
     ##
     return select_choices_from_list(choices,candidate_list)
-        
         
 def select_files(path,prompt='',suffix='txt'):
     ts=get_timestamp()   
@@ -207,12 +199,13 @@ def select_files(path,prompt='',suffix='txt'):
         matched_files.append(matched_file)
     print '[Matched files]:',matched_files
     ids,selected_files=get_user_select_list(prompt,matched_files,2)
+    print ids,select_files
     return ids,selected_files
     
 if __name__=='__main__':
-    print expand_dt('2017-01-01,2017-02-11')
-    print expand_dt('2017-02-01=>2017-02-11')
-    print expand_dt('2017-02-11=>2017-02-05')
+    print expand_date('2017-01-01,2017-02-11')
+    print expand_date('2017-02-01=>2017-02-11')
+    print expand_date('2017-02-11=>2017-02-05')
     # print select_files('..\\sh\\.','Select shell file','sh')
     print get_user_select_job_list('test_filter_select',['a','b','c'],print_colnum=1,common_prefix='sh')
     
