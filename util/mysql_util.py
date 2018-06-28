@@ -36,6 +36,7 @@ class MySQLdb_Connection:
         self.con.commit()
         rows_affected = self.cur.rowcount
         return rows_affected
+        
 
     def execute(self, sql):
         self.cur.execute(sql)
@@ -43,6 +44,14 @@ class MySQLdb_Connection:
         rows_affected = self.cur.rowcount
         return rows_affected
 
+    def execute_args(self, sql,args):
+        self.cur.execute(sql,args)
+        self.con.commit()
+        rows_affected = self.cur.rowcount
+        self.cur.close()
+        self.cur=self.con.cursor()
+        return rows_affected
+        
     def close(self):
         if self.con:
             self.con.close()
