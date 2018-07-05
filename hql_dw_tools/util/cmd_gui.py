@@ -4,7 +4,9 @@ import os
 import datetime
 import time
 import glob
+import math
 import fnmatch
+import traceback
 
 SLEEP_PAUSE = 1
 
@@ -32,10 +34,15 @@ def pause(IS_INTERACTIVE=False):
 def expand_date(dt):
     # escape
     if dt is None:
-        return dt
+        return []
+    dt=dt.replace('>>','=>')
     # date list
     if ',' in dt:
-        dt=dt.split(',')
+        dts=dt.split(',')
+        ndt=[]
+        for dt in dts:
+            ndt.extend(expand_date(dt))
+        return ndt
     # date range
     if '=>' in dt:
         start,end=dt.split('=>',1)
@@ -51,7 +58,8 @@ def expand_date(dt):
                 edt=get_date(base=start,days=-1*i)
                 dt.append(edt)
                 i+=1
-    return dt
+        return dt
+    return [dt]
     
 def get_common_prefix(strs):
     if len(strs)==1:
@@ -60,25 +68,61 @@ def get_common_prefix(strs):
     ln=len(prefix)
     nstrs=[st.split('/')[-1] for st in strs]
     return prefix,nstrs
-
+    
+def get_cmd_size():    
+    if os.name=='nt':
+        out = os.popen('mode con', 'r').read()        
+        lines = out.splitlines()
+        rows,columns=120,120
+        for i,line in enumerate(lines):
+            if line.startswith('---------'):
+                rows =  lines[i+1].split()[-1] 
+                columns = lines[i+2].split()[-1]  
+    else:
+        rows, columns = os.popen('stty size', 'r').read().split()    
+    return int(rows),int(columns)
+    
+    
 def print_cli_table(seq, columns=2,common_prefix=None):
     if common_prefix:
         prefix,seq = get_common_prefix(seq)
         table = ' \n\n [Common prefix is:  %s] \n\n'%prefix
     else:
-        table=''
-    col_height = len(seq) / columns+1
-    lpad=120/columns
-    for x in xrange(col_height):
-        for col in xrange(columns):
+        table = ''
+    col_height = int(math.ceil(len(seq) / columns )) + 1
+    _, cmd_columns = get_cmd_size()
+    if columns<=3:
+        cmd_columns-=35
+    fix_lpad = cmd_columns/columns
+    rows = []    
+    for x in range(col_height):
+        row  = []
+        for col in range(columns):
             pos = x+(col_height)*col
-            try:
-                num = seq[pos]
-                # table += ('(%s) %s %s,%s' % (pos, num,x,col)).ljust(l_pad)
-                table += ('(%s) %s ' % (pos, num)).ljust(lpad)
-            except:
-                pass
+            if pos >=len(seq):
+                continue
+            choice = seq[pos]
+            row.append(choice)
+        rows.append(row)
+    ## caculate width
+    pads = []    
+    for i in range(len(rows[0])):
+        flen = 0
+        for row in rows:
+            if len(row)<=i:
+                continue
+            flen = max(flen,len(row[i])+10)            
+        # flen = max(flen,fix_lpad)
+        pads.append(flen)
+    ## print menu
+    for i,row in enumerate(rows):
+        for j,elm in enumerate(row):
+            pos = i+(col_height)*j
+            table += ('(%s) %s ' % (pos, elm)).ljust(pads[j])
         table += '\n'
+    # print pads
+    # import tabulate
+    # print tabulate.tabulate(rows,tablefmt= "grid",showindex="always")
     return table.strip('\n')
 
 def parse_id_list(choices):
@@ -134,8 +178,10 @@ def get_user_select(prompt,candidate_list,print_colnum=1,common_prefix=None,sort
     print print_cli_table(candidate_list,print_colnum,common_prefix)    
     print '["q"','to quit]'
     choice=raw_input('[Input Number]>>')  
-    status,_,res = select_choices_from_list(choice,candidate_list)    
-    return status,res[0]
+    status,_,res = select_choices_from_list(choice,candidate_list)
+    if len(res)==0:
+        return 'empty_list',None
+    return status,res[0]    
     
 
 def get_user_select_list(prompt,candidate_list,print_colnum=1,common_prefix=None,sort_list=True):
@@ -182,9 +228,11 @@ def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=
             value=candidate_list_dict[key]
             print '[Matched pattern]:',value
             new_candidate_list.append(value)
-        print '[Not found pattern]:',list(set(keys)-found_keys)
+        print '[Not found pattern]:',list(set(filters)-found_keys)
+        print 'filter_count:%s,found_count:%s'%(len(filters),len(found_keys))
         candidate_list=new_candidate_list
     ## select job to operation
+    # print candidate_list
     print print_cli_table(candidate_list,print_colnum,common_prefix)
     print '["q" to quit."all" to select all]'
     choices = raw_input('[Input Multi Number]>>')  
@@ -215,8 +263,10 @@ def select_files(path,prompt='',suffix='txt'):
 if __name__=='__main__':
     print expand_date('2017-01-01,2017-02-11')
     print expand_date('2017-02-01=>2017-02-11')
-    print expand_date('2017-02-11=>2017-02-05')
+    print expand_date('2017-02-01>>2017-02-11')
+    print expand_date('2017-02-11=>2017-02-05,2018-01-01')
     # print select_files('..\\sh\\.','Select shell file','sh')
+    print get_user_select_job_list('get_user_select_job_list','gdm_index_time_d_sum,dim_series_view_all,gdm_cntt_clb_topic_d_sum,gdm_led_index_spec_city_d_sum,pds_car_cmp_mds_flw_spec_contrast_dtl_7yue,a_index_evalseriesavg_d_fact,pds_index_user_article_5tags,adm_flw_time_series_city_d_sum,a_index_koubei_series_d_fact'.split(','),print_colnum=5,common_prefix='sh')
     print get_user_select_job_list('get_user_select_job_list',['aa','ba','cc'],print_colnum=1,common_prefix='sh')
     print get_user_select_list('get_user_select_list',['aa','ba','cc'],print_colnum=1,common_prefix='sh')
     
