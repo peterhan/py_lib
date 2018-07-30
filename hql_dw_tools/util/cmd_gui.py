@@ -11,7 +11,7 @@ import traceback
 SLEEP_PAUSE = 1
 
     
-def get_date(fmt='%Y-%m-%d',base=datetime.datetime.now(), isobj=False, **kwargs ):
+def get_date(base=datetime.datetime.now(), fmt='%Y-%m-%d', isobj=False, **kwargs ):
     i_str2date=lambda str_date,fmt: datetime.datetime.fromtimestamp(time.mktime(time.strptime(str_date,fmt)))
     if isinstance(base,basestring):
         dateobj= i_str2date(base,fmt)+ datetime.timedelta( **kwargs)
@@ -22,6 +22,70 @@ def get_date(fmt='%Y-%m-%d',base=datetime.datetime.now(), isobj=False, **kwargs 
     else: 
         return dateobj.strftime(fmt)
         
+def check_date(dt,cycle,day_cnt):
+    #日期+1天
+    sdt = get_date(base = dt, isobj=True, days=1)      
+    day_cnt = int(day_cnt)
+    ## opts setting
+    res = True
+    if cycle == 'w':
+        cyc = 'week'
+        if sdt.isoweekday() != day_cnt:
+            res = False
+    elif cycle == 'm':
+        cyc = 'month'
+        if sdt.day != day_cnt:
+            res = False
+    elif cycle == 'q':
+        cyc = 'quarter'
+        if sdt.day != day_cnt or sdt.month not in (1,4,7,10):
+            res = False
+    return res    
+
+def date_filter_base(dt, filter_flag):
+    cyc = filter_flag[0]
+    dcnt = filter_flag[1:]
+    if check_date(dt,cyc,dcnt):
+        return True
+    return False    
+    
+def expand_date(dt_str):
+    # escape
+    if dt_str is None:
+        return []
+    dt_str = dt_str.replace('>>','=>')
+    dt_str = dt_str.replace('to','=>')
+    filter_flag = None
+    # date list
+    if ',' in dt_str:
+        dts = dt_str.split(',')
+        out_dt = []
+        for dt in dts:
+            out_dt.extend(expand_date(dt))
+        return out_dt
+    # date range    
+    elif '=>' in dt_str:
+        if '@' in dt_str:
+            dt_str, filter_flag  = dt_str.split('@',1)    
+            date_filter = lambda x:date_filter_base(x,filter_flag)
+        start, end = dt_str.split('=>',1)
+        out_dt, edt, i = [], '', 0
+        need_reverse = False
+        if start > end:
+            start, end = end, start
+            need_reverse = True
+        while edt < end:
+            edt = get_date(base=start,days=i)
+            out_dt.append(edt)
+            i+=1
+        if need_reverse:
+            out_dt.reverse()
+        if filter_flag is not None:
+            out_dt =  filter(date_filter, out_dt)
+        return out_dt
+    else:
+        return [dt_str]
+        
 def get_timestamp(fmt='%Y%m%d'):
     return datetime.datetime.now().strftime(fmt)
     
@@ -31,35 +95,6 @@ def pause(IS_INTERACTIVE=False):
     else:
         time.sleep(SLEEP_PAUSE)
         
-def expand_date(dt):
-    # escape
-    if dt is None:
-        return []
-    dt=dt.replace('>>','=>')
-    # date list
-    if ',' in dt:
-        dts=dt.split(',')
-        ndt=[]
-        for dt in dts:
-            ndt.extend(expand_date(dt))
-        return ndt
-    # date range
-    if '=>' in dt:
-        start,end=dt.split('=>',1)
-        dt,edt,i=[],'',0        
-        if start <= end:
-            while edt<end:
-                edt=get_date(base=start,days=i)
-                dt.append(edt)
-                i+=1
-        else:
-            edt=start
-            while edt >= end:
-                edt=get_date(base=start,days=-1*i)
-                dt.append(edt)
-                i+=1
-        return dt
-    return [dt]
     
 def get_common_prefix(strs):
     if len(strs)==1:
@@ -214,6 +249,8 @@ def get_user_select_job_list(prompt,candidate_list,print_colnum=1,common_prefix=
     if filters=='':
         filters=None
     else:
+        if ',' not in filters:
+            filters=filters.replace('  ',' ').replace(' ',',')
         filters=map(lambda x:x.strip(),filters.split(','))
     # use filter to filter select job
     if filters is not None:
