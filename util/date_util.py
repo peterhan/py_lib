@@ -6,8 +6,10 @@ def str2date(str_date,fmt=DATE_FORMAT):
     dobj = datetime.datetime.fromtimestamp(time.mktime(time.strptime(str_date,fmt)))
     return dobj
     
-def get_date(fmt=DATE_FORMAT,base= datetime.datetime.now(), isobj=False, **kwargs ):
-# def get_date(fmt='%Y-%m-%d',base= datetime.datetime.now(), isobj=False, **kwargs ):
+def get_date(fmt=DATE_FORMAT,base= None, isobj=False, **kwargs ):
+    if base is None:
+        base = datetime.datetime.now()
+    # def get_date(fmt='%Y-%m-%d',base= datetime.datetime.now(), isobj=False, **kwargs ):
     def i_str2date(str_date,fmt): 
         return datetime.datetime.fromtimestamp(time.mktime(time.strptime(str_date,fmt)))
     if isinstance(base,basestring):
